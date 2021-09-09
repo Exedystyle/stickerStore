@@ -5,7 +5,7 @@ import { Client } from 'pg';
 import { dbOptions } from 'src/utils/db-options';
 
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof Object> = async () => {
-  console.log('getProductsList invoked --- ');
+  console.log('getProductsList invoked');
   const client = new Client(dbOptions);
   await client.connect();
 
@@ -18,7 +18,7 @@ const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof Object> = async
     const { rows: stickers } = await client.query(query);
     console.log('Received stickers --- ', stickers);
 
-    if(!stickers) return formatJSONResponse({msg: 'Stickers not found'}, 404);
+    if(!stickers.length) return formatJSONResponse({msg: 'Stickers not found'}, 404);
 
     return formatJSONResponse(stickers)
   }

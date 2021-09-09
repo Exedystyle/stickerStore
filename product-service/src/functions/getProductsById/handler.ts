@@ -20,12 +20,12 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof Object> = async
       left join stocks on products.id = stocks.product_id where 
       id='${productId}'`;
 
-    const { rows: sticker } = await client.query(query);
-    console.log('Received sticker --- ', sticker);
+    const { rows: stickers } = await client.query(query);
+    console.log('Received sticker --- ', stickers[0]);
     
-    if(!sticker) return formatJSONResponse({msg: 'Sticker not found'}, 404);
+    if(!stickers.length) return formatJSONResponse({msg: 'Sticker not found'}, 404);
 
-    return formatJSONResponse(sticker)
+    return formatJSONResponse(stickers[0])
   }
   catch(err) {
     return formatJSONResponse({msg: `something went wrong --- ${err}`}, 500);
